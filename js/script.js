@@ -1,35 +1,42 @@
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
     let tab = document.querySelectorAll('.info-header-tab'),
         info = document.querySelector('.info-header'),
         tabContent = document.querySelectorAll('.info-tabcontent');
 
-    function hideTabContent (a) {
-        for (let i = a; i <= tabContent.length; i++) {
+    function hideTabContent(a) //скрываем весь контент, кроме var a - количество не скрытых
+    {
+        for (let i = a; i < tabContent.length; i++) {
             tabContent[i].classList.remove('show');
             tabContent[i].classList.add('hide');
         }
     }
-    hideTabContent(1);
 
-    function showTabContent (b) {
+    hideTabContent(1); //скрываем весь контент, кроме var 1 - количество не скрытых
+
+    function showTabContent(b) //Показываем, то что нужно
+    {
         if (tabContent[b].classList.contains('hide')) {
             tabContent[b].classList.remove('hide');
             tabContent[b].classList.add('show');
         }
     }
 
-    info.addEventListener('click', function(event) {
+
+    info.addEventListener('click', function(event){
         let target = event.target;
-        if (target && target.classList.contains('info-header-tab')){
-            for (let i = 0; i <= tab.length; i++){
-                if (target == tab[i]){
-                    hideTabContent(0);
-                    showTabContent(i);
+        if (target && target.classList.contains('info-header-tab')) {
+            for (let i = 0; i < tab.length; i++) {
+                if (target == tab[i]) {
+                    hideTabContent(0); //скрываем весь контент, var 0 - не показываем ничего
+                    showTabContent(i); //Показываем, то что выбрано
                     break;
                 }
             }
         }
     });
+
 });
+
+

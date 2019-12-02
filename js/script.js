@@ -42,7 +42,7 @@ window.addEventListener('DOMContentLoaded', function () {
     Timer
     */
 
-   let deadline = "2019-10-20"; //Конечная дата
+   let deadline = "2019-12-28"; //Конечная дата
 
    /*Высчитывает разницу времени от конечной даты до сегодняшней
    вернёт объект Конечная дата, часы, минуты, сек.*/
@@ -101,6 +101,137 @@ window.addEventListener('DOMContentLoaded', function () {
    
        setClock('timer', deadline);
 
-});
+           /*
+    MODAL
+    */
+
+    let more = document.querySelector('.more'),
+    overlay = document.querySelector('.overlay'),
+    close = document.querySelector('.popup-close');
+
+    function displayOn() //Включает модальное окно
+    {
+        overlay.style.display = 'block';
+        more.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+    }
+
+        more.addEventListener('click', function(){
+            displayOn(); //Включает модальное окно
+        });
+
+        close.addEventListener('click', function(){
+            overlay.style.display = 'none';
+            more.classList.remove('more-splash');
+            document.body.style.overflow = '';
+        });
+
+        /*
+        Modal УЗНАТЬ ПОДРОБНЕЕ
+        */
+
+    let bet = document.querySelectorAll('.description-btn'); //Получаем все кнопки "УЗНАТЬ ПОДРОБНЕЕ"
+    for(let i = 0; bet.length > i; i++) {   //Циклом формируем событие для каждой из кнопок
+        bet[i].addEventListener('click', function(){
+            displayOn(); //Включает модальное окно
+        });
+    }
+
+    //Form
+
+    let message = {
+        loading: 'Загрузка...',
+        success: 'Спасибо, скоро мы с вами свяжемся!',
+        failure: 'Что-то пошло не так...'
+    };
+
+    let form = document.querySelector('.main-form'),
+        input = form.getElementsByTagName('input'),
+        statusMessage = document.createElement('div');
+
+        statusMessage.classList.add('status');
+
+    form.addEventListener('submit', function(event){
+        event.preventDefault(); //отключаем стандартное поведение кнопки
+        form.appendChild(statusMessage);
+
+        let request = new XMLHttpRequest();
+        request.open('POST', 'server.php'); //Настраиваем запрос в builder
+        //request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    //Меняем заголовок, для JSON формата
+        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
+        let formData = new FormData(form); //Конструктор формирует запрос
+        let obj = {};
+        formData.forEach(function(value, key) { //Подготовка для преобразования в JSON формат
+            obj[key] = value;
+        });
+        let json = JSON.stringify(obj);
+        console.log(formData);
+        console.log(json);
+        console.log('//');
+        request.send(json);//Открывает запрос и отправляет на сервер
+
+        request.addEventListener('readystatechange', function(){
+            if(request.readyState < 4){
+                statusMessage.innerHTML = message.loading;
+            } else if(request.readyState === 4 && request.status == 200){
+                statusMessage.innerHTML = message.success;
+            } else {
+                statusMessage.innerHTML = message.failure;
+            }
+        });
+
+        for(let i = 0; i < input.length; i++){
+            input[i].value = '';
+        }
+    });
+
+    //Modal form
+
+    let formEmail = document.querySelector('#form'),
+        inputs = formEmail.getElementsByTagName('input');
+
+    formEmail.addEventListener('submit', function(event){
+        event.preventDefault();
+        formEmail.appendChild(statusMessage); //Ставим созданный заранее div под форму для показа статуса
+
+        //Настройка запроса
+        let request = new XMLHttpRequest();
+
+            request.open('POST', 'server.php');
+            request.setRequestHeader('Content-Type', 'Application/json; charset=utf-8');
+
+        //Формируем запрос в формате JSON
+        let formDataMail = new FormData(formEmail);
+        let obj = {};
+
+            formDataMail.forEach(function(value, key){
+                obj[key] = value;
+            });
+            let json = JSON.stringify(obj);
+
+            console.log(formDataMail);
+            console.log(json);
+            console.log('//');
+            request.send(json); //Отправляем в формате JSON
+
+        //Событие для отслеживания состояний запроса
+        request.addEventListener('readystatechange', function(){
+            if( request.readyState < 4 ){
+                statusMessage.innerHTML = message.loading;
+                //При успехе очищаем все поля формы
+                    for(let i = 0; i < inputs.length; i++){
+                        inputs[i].value = '';
+                    }
+            } else if ( request.readyState === 4 && request.status == 200 ){
+                statusMessage.innerHTML = message.success;
+            } else {
+                statusMessage.innerHTML = message.failure;
+            }
+        });
+    });
+
+});//////////  END PROGRAMM    ////////////
 
 

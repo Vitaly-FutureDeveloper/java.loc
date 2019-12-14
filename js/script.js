@@ -292,7 +292,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
         totalValue.innerHTML = 0;
 
-    persons.addEventListener('change', function(){
+    persons.addEventListener('input', function(){
         personsSum = +this.value;
         total = (daysSum + personsSum)*4000;
 
@@ -306,7 +306,7 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    restDays.addEventListener('change', function(){
+    restDays.addEventListener('input', function(){
         daysSum = +this.value;
         total = (daysSum + personsSum)*4000;
 

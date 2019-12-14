@@ -106,8 +106,8 @@ window.addEventListener('DOMContentLoaded', function () {
     */
 
     let more = document.querySelector('.more'),
-    overlay = document.querySelector('.overlay'),
-    close = document.querySelector('.popup-close');
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close');
 
     function displayOn() //Включает модальное окно
     {
@@ -167,9 +167,7 @@ window.addEventListener('DOMContentLoaded', function () {
             obj[key] = value;
         });
         let json = JSON.stringify(obj);
-        console.log(formData);
-        console.log(json);
-        console.log('//');
+
         request.send(json);//Открывает запрос и отправляет на сервер
 
         request.addEventListener('readystatechange', function(){
@@ -211,9 +209,6 @@ window.addEventListener('DOMContentLoaded', function () {
             });
             let json = JSON.stringify(obj);
 
-            console.log(formDataMail);
-            console.log(json);
-            console.log('//');
             request.send(json); //Отправляем в формате JSON
 
         //Событие для отслеживания состояний запроса

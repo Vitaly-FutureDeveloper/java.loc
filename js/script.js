@@ -91,7 +91,6 @@ window.addEventListener('DOMContentLoaded', function () {
    /*Приверка на "время закончилось", прерывание интервала*/
                if(t.total <= 0 ) {
                    clearInterval(timeInterval);
-   /*Пишем в DOM обекты таймера: часы, минуты, сек - время по нулям*/
                        hours.textContent = '00';
                        minutes.textContent = '00';
                        seconds.textContent = '00';
@@ -209,7 +208,7 @@ window.addEventListener('DOMContentLoaded', function () {
             });
             let json = JSON.stringify(obj);
 
-            request.send(json); //Отправляем в формате JSON
+            request.send(json); 
 
         //Событие для отслеживания состояний запроса
         request.addEventListener('readystatechange', function(){
@@ -277,6 +276,52 @@ window.addEventListener('DOMContentLoaded', function () {
     });
 
     setInterval( () => next.click(), 3000 );
+
+
+    /*
+    CALCULATOR
+    */
+
+    let persons = document.querySelectorAll('.counter-block-input')[0],
+        restDays = document.querySelectorAll('.counter-block-input')[1],
+        place = document.getElementById('select'),
+        totalValue = document.getElementById('total'),
+        personsSum = 0,
+        daysSum = 0,
+        total = 0;
+
+        totalValue.innerHTML = 0;
+
+    persons.addEventListener('change', function(){
+        personsSum = +this.value;
+        total = (daysSum + personsSum)*4000;
+
+        if(restDays.value == ''){
+            totalValue.innerHTML = 0;
+        } else {
+            totalValue.innerHTML = total;
+        }
+    });
+
+    restDays.addEventListener('change', function(){
+        daysSum = +this.value;
+        total = (daysSum + personsSum)*4000;
+
+        if(persons.value == ''){
+            totalValue.innerHTML = 0;
+        } else {
+            totalValue.innerHTML = total;
+        }
+    });
+
+    place.addEventListener('change', function(){
+        if(restDays.value == '' || persons.value == '') {
+            totalValue.innerHTML = 0;
+        } else {
+            let a = total; //Техническая переменная, для безопасного расчёта из select
+            totalValue.innerHTML = a * this.options[this.selectedIndex].value;
+        }
+    });
 
 });//////////  END PROGRAMM    ////////////
 

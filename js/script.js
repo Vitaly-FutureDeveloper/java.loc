@@ -301,7 +301,8 @@ window.addEventListener('DOMContentLoaded', function () {
         {
             totalValue.innerHTML = 0;
         } else {
-            totalValue.innerHTML = total;
+            let a = total; //Техническая переменная, для безопасного расчёта из select
+            totalValue.innerHTML = a * place.options[place.selectedIndex].value;
         }
     });
 
@@ -314,7 +315,8 @@ window.addEventListener('DOMContentLoaded', function () {
         {
             totalValue.innerHTML = 0;
         } else {
-            totalValue.innerHTML = total;
+            let a = total; //Техническая переменная, для безопасного расчёта из select
+            totalValue.innerHTML = a * place.options[place.selectedIndex].value;
         }
     });
 
